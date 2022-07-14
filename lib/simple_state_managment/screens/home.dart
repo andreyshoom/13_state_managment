@@ -25,14 +25,14 @@ class HomePage extends StatelessWidget {
         itemCount: 50,
         cacheExtent: 20.0,
         padding: const EdgeInsets.symmetric(vertical: 16),
-        itemBuilder: (context, index) => ItemaView(itemNum: index),
+        itemBuilder: (context, index) => ItemsView(itemNum: index),
       ),
     );
   }
 }
 
-class ItemaView extends StatelessWidget {
-  const ItemaView({Key? key, required this.itemNum}) : super(key: key);
+class ItemsView extends StatelessWidget {
+  const ItemsView({Key? key, required this.itemNum}) : super(key: key);
 
   final int itemNum;
   @override

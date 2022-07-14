@@ -1,7 +1,4 @@
-import 'dart:ffi';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 enum CartEvent {
   add,
@@ -12,14 +9,15 @@ class CartBloc extends Bloc<CartEvent, dynamic> {
   CartBloc() : super([]);
 
   final List<int> _cartList = [];
+  List<int> get items => _cartList;
 
   @override
-  Stream<dynamic> mapEventToState(CartEvent event, int item) async* {
+  Stream<dynamic> mapEventToState(CartEvent event) async* {
     if (event == CartEvent.add) {
-      _cartList.add(item);
+      // _cartList.add();
     }
     if (event == CartEvent.remove) {
-      _cartList.remove(item);
+      _cartList.remove(items);
     }
     yield _cartList;
   }

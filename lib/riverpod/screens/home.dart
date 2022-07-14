@@ -3,12 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:state_managment/riverpod/models/cart.dart';
 import 'package:state_managment/riverpod/screens/cart.dart';
 
-class HomePage extends ConsumerWidget {
+class HomePage extends StatelessWidget {
   static const String routeName = '/';
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef watch) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Page'),
@@ -36,8 +36,8 @@ class ItemaView extends ConsumerWidget {
 
   final int itemNum;
   @override
-  Widget build(BuildContext context, WidgetRef watch) {
-    final provider = watch.watch(cartProvider.notifier);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final provider = ref.watch(cartProvider.notifier);
 
     return Column(
       children: [
@@ -50,14 +50,14 @@ class ItemaView extends ConsumerWidget {
             ),
             title: Text('item $itemNum'),
             trailing: IconButton(
-              icon: provider.items.contains(itemNum)
+              icon: provider.state.contains(itemNum)
                   ? const Icon(
                       Icons.check_circle,
                       color: Colors.blue,
                     )
                   : const Icon(Icons.add_circle_outline_sharp),
               onPressed: () {
-                !provider.items.contains(itemNum)
+                !provider.state.contains(itemNum)
                     ? provider.add(itemNum)
                     : provider.remove(itemNum);
               },
