@@ -12,11 +12,10 @@ class CartPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Cart'),
       ),
-      body: BlocBuilder<CartBloc, dynamic>(
+      body: BlocBuilder<CartBloc, List<int>>(
         builder: (context, value) => ListView.builder(
-          itemBuilder: (context, index) =>
-              CartView(itemNumber: value.items[index]),
-          itemCount: value.items.length,
+          itemBuilder: (context, index) => CartView(itemNumber: value[index]),
+          itemCount: value.length,
           padding: const EdgeInsets.symmetric(vertical: 16.0),
         ),
       ),
@@ -38,7 +37,7 @@ class CartView extends StatelessWidget {
             title: Text('items $itemNumber'),
             trailing: IconButton(
               onPressed: (() {
-                context.read<CartBloc>().add(CartEvent.remove);
+                context.read<CartBloc>().add(CartRemove(itemNumber));
               }),
               icon: const Icon(
                 Icons.remove_circle_outlined,

@@ -1,18 +1,15 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class Cart {
   Cart({required this.item});
   final int item;
-
-  @override
-  List<Object> get props => [item];
 }
 
 class CartNotifier extends StateNotifier<List<int>> {
   CartNotifier() : super([]);
 
-  void addCart(int item) {
-    state = [...state, item];
+  void addCart(int itemToAdd) {
+    state = [...state, itemToAdd];
   }
 
   void removeCart(int itemToRemove) {
@@ -23,5 +20,5 @@ class CartNotifier extends StateNotifier<List<int>> {
   }
 }
 
-final cartProvider =
+final cartProviderHooks =
     StateNotifierProvider<CartNotifier, List<int>>((ref) => CartNotifier());

@@ -11,7 +11,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Page'),
+        title: const Text('Home Page RiverPod'),
         actions: [
           IconButton(
             onPressed: (() {
@@ -25,42 +25,46 @@ class HomePage extends StatelessWidget {
         itemCount: 50,
         cacheExtent: 20.0,
         padding: const EdgeInsets.symmetric(vertical: 16),
-        itemBuilder: (context, index) => ItemaView(itemNum: index),
+        itemBuilder: (context, index) => ItemsView(itemNum: index),
       ),
     );
   }
 }
 
-class ItemaView extends ConsumerWidget {
-  const ItemaView({Key? key, required this.itemNum}) : super(key: key);
+class ItemsView extends ConsumerWidget {
+  const ItemsView({Key? key, required this.itemNum}) : super(key: key);
 
   final int itemNum;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final provider = ref.watch(cartProvider.notifier);
+    final cart = ref.watch(cartProvider);
+    final stateCart = ref.watch(cartProvider.notifier).state.contains(itemNum);
+    final providerCart = ref.read(cartProvider.notifier);
 
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ListTile(
-            leading: Icon(
-              Icons.bakery_dining_outlined,
-              color: Colors.primaries[itemNum % Colors.primaries.length],
-            ),
-            title: Text('item $itemNum'),
-            trailing: IconButton(
-              icon: provider.state.contains(itemNum)
-                  ? const Icon(
-                      Icons.check_circle,
-                      color: Colors.blue,
-                    )
-                  : const Icon(Icons.add_circle_outline_sharp),
-              onPressed: () {
-                !provider.state.contains(itemNum)
-                    ? provider.add(itemNum)
-                    : provider.remove(itemNum);
-              },
+        Consumer(
+          builder: (context, ref, child) => Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListTile(
+              leading: Icon(
+                Icons.bakery_dining_outlined,
+                color: Colors.primaries[itemNum % Colors.primaries.length],
+              ),
+              title: Text('item $itemNum'),
+              trailing: IconButton(
+                icon: stateCart
+                    ? const Icon(
+                        Icons.check_circle,
+                        color: Colors.blue,
+                      )
+                    : const Icon(Icons.add_circle_outline_sharp),
+                onPressed: () {
+                  !stateCart
+                      ? providerCart.addCart(itemNum)
+                      : providerCart.removeCart(itemNum);
+                },
+              ),
             ),
           ),
         ),

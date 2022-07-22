@@ -25,21 +25,22 @@ class HomePage extends StatelessWidget {
         itemCount: 50,
         cacheExtent: 20.0,
         padding: const EdgeInsets.symmetric(vertical: 16),
-        itemBuilder: (context, index) => ItemaView(itemNum: index),
+        itemBuilder: (context, index) => ItemsView(itemNum: index),
       ),
     );
   }
 }
 
-class ItemaView extends StatelessWidget {
-  const ItemaView({Key? key, required this.itemNum}) : super(key: key);
+class ItemsView extends StatelessWidget {
+  const ItemsView({Key? key, required this.itemNum}) : super(key: key);
 
   final int itemNum;
   @override
   Widget build(BuildContext context) {
+    final cart = context.read<CartBloc>();
     return Column(
       children: [
-        BlocBuilder<CartBloc, dynamic>(
+        BlocBuilder<CartBloc, List<int>>(
           builder: (context, state) => Padding(
             padding: const EdgeInsets.all(8.0),
             child: ListTile(
@@ -49,16 +50,16 @@ class ItemaView extends StatelessWidget {
               ),
               title: Text('item $itemNum'),
               trailing: IconButton(
-                icon: context.read<CartBloc>().state.items.contains(itemNum)
+                icon: state.contains(itemNum)
                     ? const Icon(
                         Icons.check_circle,
                         color: Colors.blue,
                       )
                     : const Icon(Icons.add_circle_outline_sharp),
                 onPressed: () {
-                  !context.read<CartBloc>().state.items.contains(itemNum)
-                      ? context.read<CartBloc>().add(CartEvent.add)
-                      : context.read<CartBloc>().add(CartEvent.remove);
+                  !state.contains(itemNum)
+                      ? cart.add(CartAdd(itemNum))
+                      : cart.add(CartRemove(itemNum));
                 },
               ),
               onTap: () {},

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:state_managment/riverpod/screens/cart.dart';
-import 'package:state_managment/riverpod/screens/home.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:state_managment/hooks_riverpod/screens/cart.dart';
+import 'package:state_managment/hooks_riverpod/screens/home.dart';
 
 void main() {
   runApp(

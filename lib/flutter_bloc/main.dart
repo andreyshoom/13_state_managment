@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<CartBloc>(
-      create: (context) => CartBloc(),
+      create: (context) => CartBloc([]),
       child: MaterialApp(
         theme: ThemeData(primaryColor: Colors.blue),
         onGenerateRoute: (RouteSettings settings) {
@@ -22,13 +22,13 @@ class MyApp extends StatelessWidget {
             case HomePage.routeName:
               return MaterialPageRoute(
                 builder: (context) {
-                  return HomePage();
+                  return const HomePage();
                 },
               );
             case CartPage.routeName:
               return MaterialPageRoute(
                 builder: (context) {
-                  return CartPage();
+                  return const CartPage();
                 },
               );
           }

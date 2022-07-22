@@ -1,24 +1,30 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-enum CartEvent {
-  add,
-  remove,
+abstract class CartEvent {}
+
+class CartAdd extends CartEvent {
+  final int itemAdd;
+
+  CartAdd(this.itemAdd);
 }
 
-class CartBloc extends Bloc<CartEvent, dynamic> {
-  CartBloc() : super([]);
+class CartRemove extends CartEvent {
+  final int itemRemove;
 
-  final List<int> _cartList = [];
-  List<int> get items => _cartList;
+  CartRemove(this.itemRemove);
+}
 
-  @override
-  Stream<dynamic> mapEventToState(CartEvent event) async* {
-    if (event == CartEvent.add) {
-      // _cartList.add();
-    }
-    if (event == CartEvent.remove) {
-      _cartList.remove(items);
-    }
-    yield _cartList;
+class CartBloc extends Bloc<CartEvent, List<int>> {
+  final List<int> cartList;
+
+  List<int> get items => cartList;
+
+  CartBloc(this.cartList) : super([]) {
+    on<CartAdd>((event, emit) {
+      emit([...cartList..add(event.itemAdd)]);
+    });
+    on<CartRemove>((event, emit) {
+      emit([...cartList..remove(event.itemRemove)]);
+    });
   }
 }
