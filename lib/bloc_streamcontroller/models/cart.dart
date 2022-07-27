@@ -22,7 +22,7 @@ class CartBloc {
   final _eventController = StreamController<CartEvent>();
 
   Stream get state => _stateController.stream;
-  Sink<CartEvent> get action => _eventController;
+  Sink<CartEvent> get action => _eventController.sink;
 
   CartBloc(this.cartList) {
     _eventController.stream.listen(_handleEvent);
