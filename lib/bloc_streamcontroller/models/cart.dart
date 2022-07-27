@@ -18,10 +18,10 @@ class CartBloc {
   final List<int> cartList;
   List<int> get items => cartList;
 
-  final _stateController = StreamController<List<int>>();
+  final _stateController = StreamController();
   final _eventController = StreamController<CartEvent>();
 
-  Stream<List<int>> get state => _stateController.stream;
+  Stream get state => _stateController.stream;
   Sink<CartEvent> get action => _eventController;
 
   CartBloc(this.cartList) {
@@ -33,13 +33,13 @@ class CartBloc {
     _eventController.close();
   }
 
-  void _handleEvent(CartEvent action) async {
+  void _handleEvent(CartEvent action) {
     if (action is CartAdd) {
       cartList.add(action.itemAdd);
     }
     if (action is CartRemove) {
       cartList.remove(action.itemRemove);
     }
-    _stateController.add(cartList);
+    _stateController.add(cartList.toList());
   }
 }
