@@ -1,29 +1,61 @@
 import 'package:state_managment/bloc_streamcontroller/models/cart.dart';
 import 'package:flutter/material.dart';
 
-class CartPage extends StatelessWidget {
+class CartPage extends StatefulWidget {
   static const String routeName = '/cart';
   const CartPage({Key? key}) : super(key: key);
 
   @override
+  State<CartPage> createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
+  // late CartBloc bloc;
+
+  @override
   Widget build(BuildContext context) {
-    final bloc = CartBloc([]).cartList;
+    final bloc = CartBloc();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cart Bloc Stream Controller'),
       ),
-      body: StreamBuilder(
-          // stream: bloc.,
+      body: StreamBuilder<List<int>>(
+          stream: bloc.state,
           builder: (context, snapshot) {
-        return ListView.builder(
-          itemBuilder: (context, index) => CartView(itemNumber: bloc[index]),
-          itemCount: bloc.length,
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
-        );
-      }),
+            print(snapshot.data?.first);
+            return ListView.builder(
+              itemBuilder: (context, index) =>
+                  CartView(itemNumber: bloc.cartList[index]),
+              itemCount: bloc.cartList.length,
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+            );
+          }),
     );
   }
+
+  // @override
+  // void initState() {
+  //   bloc = CartBloc();
+  //   super.initState();
+  // }
+
+  // @override
+  // void dispose() {
+  //   bloc.dispode();
+  //   super.dispose();
+  // }
 }
+
+// class CartPage extends StatelessWidget {
+//   static const String routeName = '/cart';
+//   CartPage({Key? key}) : super(key: key);
+//   late final CartBloc bloc;
+//   @override
+//   Widget build(BuildContext context) {
+//     // bloc = bloc.state as CartBloc;
+//   }
+// }
 
 class CartView extends StatefulWidget {
   const CartView({Key? key, required this.itemNumber}) : super(key: key);
@@ -41,7 +73,7 @@ class _CartViewState extends State<CartView> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        StreamBuilder(
+        StreamBuilder<List<int>>(
             stream: bloc.state,
             builder: (context, snapshot) {
               return Padding(
@@ -70,8 +102,8 @@ class _CartViewState extends State<CartView> {
 
   @override
   void initState() {
+    bloc = CartBloc();
     super.initState();
-    bloc = CartBloc([]);
   }
 
   @override

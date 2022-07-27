@@ -15,16 +15,16 @@ class CartRemove extends CartEvent {
 }
 
 class CartBloc {
-  final List<int> cartList;
+  List<int> cartList = [];
   List<int> get items => cartList;
 
-  final _stateController = StreamController();
+  final _stateController = StreamController<List<int>>();
   final _eventController = StreamController<CartEvent>();
 
-  Stream get state => _stateController.stream;
+  Stream<List<int>> get state => _stateController.stream;
   Sink<CartEvent> get action => _eventController.sink;
 
-  CartBloc(this.cartList) {
+  CartBloc() {
     _eventController.stream.listen(_handleEvent);
   }
 
@@ -35,11 +35,17 @@ class CartBloc {
 
   void _handleEvent(CartEvent action) {
     if (action is CartAdd) {
+      print('item: ${action.itemAdd}');
       cartList.add(action.itemAdd);
     }
     if (action is CartRemove) {
       cartList.remove(action.itemRemove);
     }
-    _stateController.add(cartList.toList());
+    print('length: ${cartList.length}');
+    for (var i = 0; i < cartList.length; i++) {
+      print(cartList[i]);
+    }
+
+    _stateController.add(cartList);
   }
 }

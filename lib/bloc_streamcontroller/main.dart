@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
           case CartPage.routeName:
             return MaterialPageRoute(
               builder: (context) {
-                return const CartPage();
+                return CartPage();
               },
             );
         }
