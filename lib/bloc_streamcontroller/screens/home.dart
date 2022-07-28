@@ -49,7 +49,7 @@ class _ItemsViewState extends State<ItemsView> {
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: StreamBuilder<List<int>>(
+          child: StreamBuilder(
             stream: bloc.state,
             builder: (context, snapshot) {
               return ListTile(
@@ -67,12 +67,9 @@ class _ItemsViewState extends State<ItemsView> {
                         )
                       : const Icon(Icons.add_circle_outline_sharp),
                   onPressed: () {
-                    // print(!bloc.cartList.contains(widget.itemNum));
                     !bloc.cartList.contains(widget.itemNum)
                         ? bloc.action.add(CartAdd(widget.itemNum))
                         : bloc.action.add(CartRemove(widget.itemNum));
-                    // print(widget.itemNum);
-                    print(bloc.cartList.length);
                   },
                 ),
               );

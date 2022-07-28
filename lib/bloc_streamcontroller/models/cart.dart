@@ -35,15 +35,10 @@ class CartBloc {
 
   void _handleEvent(CartEvent action) {
     if (action is CartAdd) {
-      print('item: ${action.itemAdd}');
       cartList.add(action.itemAdd);
     }
     if (action is CartRemove) {
       cartList.remove(action.itemRemove);
-    }
-    print('length: ${cartList.length}');
-    for (var i = 0; i < cartList.length; i++) {
-      print(cartList[i]);
     }
 
     _stateController.add(cartList);
