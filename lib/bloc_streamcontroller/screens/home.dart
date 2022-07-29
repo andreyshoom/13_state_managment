@@ -4,8 +4,8 @@ import 'package:state_managment/bloc_streamcontroller/screens/cart.dart';
 
 class HomePage extends StatelessWidget {
   static const String routeName = '/';
-  const HomePage({Key? key}) : super(key: key);
-
+  const HomePage({Key? key, required this.bloc}) : super(key: key);
+  final CartBloc bloc;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,54 +26,43 @@ class HomePage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 16),
         itemBuilder: (context, index) => ItemsView(
           itemNum: index,
+          bloc: bloc,
         ),
       ),
     );
   }
 }
 
-class ItemsView extends StatefulWidget {
-  const ItemsView({Key? key, required this.itemNum}) : super(key: key);
-
+class ItemsView extends StatelessWidget {
+  const ItemsView({Key? key, required this.itemNum, required this.bloc})
+      : super(key: key);
   final int itemNum;
-  @override
-  State<ItemsView> createState() => _ItemsViewState();
-}
-
-class _ItemsViewState extends State<ItemsView> {
-  late final CartBloc bloc;
-
+  final CartBloc bloc;
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: StreamBuilder(
-            stream: bloc.state,
-            builder: (context, snapshot) {
-              return ListTile(
-                leading: Icon(
-                  Icons.bakery_dining_outlined,
-                  color: Colors
-                      .primaries[widget.itemNum % Colors.primaries.length],
-                ),
-                title: Text('item ${widget.itemNum}'),
-                trailing: IconButton(
-                  icon: bloc.cartList.contains(widget.itemNum)
-                      ? const Icon(
-                          Icons.check_circle,
-                          color: Colors.blue,
-                        )
-                      : const Icon(Icons.add_circle_outline_sharp),
-                  onPressed: () {
-                    !bloc.cartList.contains(widget.itemNum)
-                        ? bloc.action.add(CartAdd(widget.itemNum))
-                        : bloc.action.add(CartRemove(widget.itemNum));
-                  },
-                ),
-              );
-            },
+          child: ListTile(
+            leading: Icon(
+              Icons.bakery_dining_outlined,
+              color: Colors.primaries[itemNum % Colors.primaries.length],
+            ),
+            title: Text('item $itemNum'),
+            trailing: IconButton(
+              icon: bloc.cartList.contains(itemNum)
+                  ? const Icon(
+                      Icons.check_circle,
+                      color: Colors.blue,
+                    )
+                  : const Icon(Icons.add_circle_outline_sharp),
+              onPressed: () {
+                !bloc.cartList.contains(itemNum)
+                    ? bloc.action.add(CartAdd(itemNum))
+                    : bloc.action.add(CartRemove(itemNum));
+              },
+            ),
           ),
         ),
         const Divider(
@@ -82,17 +71,5 @@ class _ItemsViewState extends State<ItemsView> {
         ),
       ],
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    bloc = CartBloc();
-  }
-
-  @override
-  void dispose() {
-    bloc.dispode();
-    super.dispose();
   }
 }
